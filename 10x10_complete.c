@@ -255,7 +255,7 @@ int main()
                                printf("Podaj jeszcze raz kolumne i wiersz dla 'o':\n");
                                scanf("%d %d", &x, &y);
                       }
-                      tab[x][y];
+                      tab[x][y] = 'o';
              }
              ++zajete_pola;
              sprawdz_mozliwosci(tab, 'x', 4);

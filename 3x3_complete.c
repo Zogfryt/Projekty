@@ -112,7 +112,7 @@ int main()
                                printf("Jeszcze raz inna pozycja'o':\n");
                                scanf("%d %d", &x, &y);
                       }
-                      tab[x][y]=='o';
+                      tab[x][y]='o';
              }
              ++zajete_pola;
              sprawdz_mozliwosci(tab, 'x', 6);
