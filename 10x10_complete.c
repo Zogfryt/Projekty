@@ -2,27 +2,29 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define Size 10
-#define WIN 1
-#define NWIN -1
+#define WIN 2000000000
+#define NWIN -2000000000
 #define REMIS 0
 
 void wypisz(char tab[Size][Size])
 {
-    printf(" 0 1 2 3 4 5 6 7 8 9\n");
+    printf("   0   1   2   3   4   5   6   7   8   9\n");
          for(int i=0; i<Size; i++)
          {
-             printf("%d",i);
+             printf("------------------------------------------\n%d",i);
                   for(int j=0; j<Size; j++)
                   {
-                           printf("%c ", tab[i][j]);
+                           printf("| %c ", tab[i][j]);
                   }
                   printf("\n");
          }
+         printf("\n");
 }
 
 int ocen(char tab[Size][Size])
 {
     int l=0;
+    int lmin[3]={0,0,0};
     char symbol_gracza='x';
          if(symbol_gracza=='x')
          for(int i=0;i<Size;i++)
@@ -79,7 +81,7 @@ int ocen(char tab[Size][Size])
                     }
 
                     if(l==5)
-                    return Size;
+                    return WIN;
                     }
                 }
 
@@ -93,7 +95,6 @@ int ocen(char tab[Size][Size])
                 if(tab[i][j]=='o')
                 {
                     l=1;
-                    if(i<6 && j<6){
                     for(int z=1;z<5;z++) //ukos w dó³-lewo
                     {
                         if(tab[i+z][j+z]!='o')
@@ -102,10 +103,12 @@ int ocen(char tab[Size][Size])
                     }
                     if(l==5)
                     return NWIN;
-                    else l=1;
-                    }
+                    else if (l>=2)
+                        lmin[l-2]++;
+                    l=1;
 
-                    if(i<6 && j>3){
+
+
                     for(int z=1;z<5;z++) //ukos w dó³-prawo
                     {
                         if(tab[i+z][j-z]!='o')
@@ -115,10 +118,10 @@ int ocen(char tab[Size][Size])
 
                     if(l==5)
                     return NWIN;
-                    else l=1;
-                    }
+                    else if (l>=2)
+                    lmin[l-2]++;
+                    l=1;
 
-                    if(i<6){
                     for(int z=1;z<5;z++) //dó³
                     {
                         if(tab[i+z][j]!='o')
@@ -128,10 +131,10 @@ int ocen(char tab[Size][Size])
 
                     if(l==5)
                     return NWIN;
-                    else l=1;
-                    }
+                    else if (l>=2)
+                        lmin[l-2]++;
+                    l=1;
 
-                    if(j<6){
                     for(int z=1;z<5;z++) //prawo
                     {
                         if(tab[i][j+z]!='o')
@@ -141,11 +144,13 @@ int ocen(char tab[Size][Size])
 
                     if(l==5)
                     return NWIN;
-                }
+                    else if (l>=2)
+                    lmin[l-2]++;
+                    l=1;
                 }
 
             }
-            return REMIS;
+            return -1*(lmin[0]+100*lmin[1]+10000*lmin[2]);
 
 
 
@@ -178,11 +183,11 @@ int blisko(char tab[Size][Size], int i, int j)
 int sprawdz_mozliwosci(char tab[Size][Size], char znak, int glebia)
 {
          int ocena = ocen(tab), ile_zajetych_pol = 0;
-         if(ocena != REMIS || glebia == 0) { return ocena; }
+         if(ocena == NWIN || ocena == WIN ||  glebia == 0) { return ocena; }
 
          int aocena, nopcja;
-         if(znak == 'o') { nopcja = WIN + 1; }
-         else { nopcja = NWIN - 1; }
+         if(znak == 'o') { nopcja = WIN + 1000; }
+         else { nopcja = NWIN - 1000; }
 
          for(int i=0; i<Size; i++)
          {
@@ -240,7 +245,7 @@ int main()
     char tab[Size][Size];
     wyczysc(tab);
     int x, y, stan = REMIS, zajete_pola = 0;
-    while(stan == REMIS && zajete_pola < 100)
+    while(stan != WIN && stan != NWIN && zajete_pola < 100)
     {
              printf("Podaj kolumne i wiersz dla 'o':\n");
              scanf("%d %d", &x, &y);
@@ -255,7 +260,7 @@ int main()
                                printf("Podaj jeszcze raz kolumne i wiersz dla 'o':\n");
                                scanf("%d %d", &x, &y);
                       }
-                      tab[x][y];
+                      tab[x][y] = 'o';
              }
              ++zajete_pola;
              sprawdz_mozliwosci(tab, 'x', 4);
@@ -267,5 +272,6 @@ int main()
     if(stan == NWIN) { printf("WYGRAL: o"); }
     else if(stan == WIN) { printf("WYGRALO: x"); }
     else { printf("REMIS"); }
+    getchar();
     return 0;
 }
