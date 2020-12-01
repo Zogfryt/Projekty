@@ -249,6 +249,7 @@ int komputer(int plansza[size][size],char znak,int glebia)
 
     if(znak == 'k')
     {
+        wypisz(plansza);
         wmax=100*PRZEGRANA;
         for(int i=0;i<size;i++)
         for(int j=0;j<size;j++)
@@ -262,6 +263,8 @@ int komputer(int plansza[size][size],char znak,int glebia)
                             break;
                         dx=odleglosc*WX[plansza[i][j]][kierunek];
                         dy=odleglosc*WY[plansza[i][j]][kierunek];
+                        if(plansza[i][j]==12 && WY[plansza[i][j]][kierunek] == 0 && i==1)
+                            dx++;
                         if(i+dx < 8 && i+dx >=0 && j+dy >=0 && j+dy < 8)
                             if(plansza[i+dx][j+dy] <= 6)
                             if(plansza[i][j]!=12 || (plansza[i+dx][j+dy] == PUSTE && dy ==0) || (plansza[i+dx][i+dy] != PUSTE && dy !=0))
@@ -307,10 +310,14 @@ int komputer(int plansza[size][size],char znak,int glebia)
                             break;
                         dx=odleglosc*WX[plansza[i][j]][kierunek];
                         dy=odleglosc*WY[plansza[i][j]][kierunek];
+                        if(plansza[i][j]==6 && WY[plansza[i][j]][kierunek] == 0 && i==6)
+                            dx--;
                         if(i+dx < 8 && i+dx >=0 && j+dy >=0 && j+dy < 8)
                             if(plansza[i+dx][j+dy]==0 || plansza[i+dx][j+dy] >=7)
                             if(plansza[i][j]!=6 || (plansza[i+dx][j+dy] == PUSTE && dy ==0) || (plansza[i+dx][i+dy] != PUSTE && dy !=0))
                             {
+                                if(plansza[i][j]==6 && WY[plansza[i][j]][kierunek] == 0 && i==6)
+                                dx--;
                                 ruch_fig = plansza[i][j];
                                 bita_fig = plansza[i+dx][j+dy];
                                 plansza[i+dx][j+dy] = plansza[i][j];
