@@ -442,6 +442,7 @@ int main()
         if(plansza[dx][dy]==6 && dx == 0)
         plansza[dx][dy]=KROLOWA;
         zagrok=komputer(plansza,'g',1,Mnieskon,nieskon);
+        zagrop=komputer(plansza,'k',1,Mnieskon,nieskon);
         stan=komputer(plansza,'k',2,Mnieskon,nieskon);
         if(stan>WYGRANA || stan < PRZEGRANA)
             break;
@@ -451,6 +452,7 @@ int main()
         plansza[nx][ny]=PUSTE;
         stan=komputer(plansza,'g',2,Mnieskon,nieskon);
         zagrop=komputer(plansza,'k',1,Mnieskon,nieskon);
+        zagrok=komputer(plansza,'g',1,Mnieskon,nieskon);
         system("cls");
         wypisz(plansza);
         if(zagrop > WYGRANA)
@@ -462,10 +464,8 @@ int main()
     system("cls");
     wypisz(plansza);
     printf("%d",stan);
-    if((stan < PRZEGRANA || stan > WYGRANA) && zagrop < WYGRANA && zagrop > PRZEGRANA && znak == 'k')
-    printf("PAT1");
-    else if((stan < PRZEGRANA || stan > WYGRANA) && zagrok < WYGRANA && zagrok > PRZEGRANA && znak == 'g')
-    printf("PAT2");
+    if((stan > WYGRANA || stan < PRZEGRANA) && zagrok > PRZEGRANA && zagrok < WYGRANA && zagrop > PRZEGRANA && zagrop < WYGRANA)
+    printf("PAT");
     else if(stan > WYGRANA)
     printf("AI WON!!");
     else if(stan < PRZEGRANA)
