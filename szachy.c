@@ -15,10 +15,11 @@
 #define WIEZA_K 10
 #define KON_K 11
 #define PION_K 12
+#define PAT 20000000
 
 int MAX_KIER[13]={0,8,8,4,4,8,3,8,8,4,4,8,3};
 int MAX_RANGE[13]={0,2,8,8,8,2,2,2,8,8,8,2,2};
-int oc[13]={0,WYGRANA,180,60,100,60,20,PRZEGRANA,-180,-60,-100,-60,-20};
+int oc[13]={0,18000,180,60,100,60,20,-18000,-180,-60,-100,-60,-20};
 int nx,ny,no,nk;
 
 int WX[13][8]=
@@ -41,14 +42,14 @@ int WX[13][8]=
 int WY[13][8]=
 {
     {0,0,0,0,0,0,0,0},
-    {-1,0,1,1,1,0,-1},
-    {-1,0,1,1,1,0,-1},
+    {-1,0,1,1,1,0,-1,-1},
+    {-1,0,1,1,1,0,-1,-1},
     {-1,1,1,-1},
     {0,1,0,-1},
     {-2,-1,1,2,2,1,-1,-2},
     {-1,0,1},
-    {-1,0,1,1,1,0,-1},
-    {-1,0,1,1,1,0,-1},
+    {-1,0,1,1,1,0,-1,-1},
+    {-1,0,1,1,1,0,-1,-1},
     {-1,1,1,-1},
     {0,1,0,-1},
     {-2,-1,1,2,2,1,-1,-2},
@@ -192,11 +193,10 @@ int HEUR[13][size][size]={
 
 void wypisz(int plansza[size][size])
 {
-    //system("cls");
-    printf("    0   1   2   3   4   5   6   7 \n  --------------------------------\n");
+    printf("    a   b   c   d   e   f   g   h \n  --------------------------------\n");
     for(int i=0;i<size;i++)
     {
-        printf("%d ",i);
+        printf("%d ",i+1);
         for(int j=0;j<size;j++)
         {
          if(plansza[i][j]==KROL)
@@ -264,31 +264,60 @@ int komputer(int plansza[size][size],char znak,int glebia)
                         dy=odleglosc*WY[plansza[i][j]][kierunek];
                         if(i+dx < 8 && i+dx >=0 && j+dy >=0 && j+dy < 8)
                             if(plansza[i+dx][j+dy] <= 6)
-                            if(plansza[i][j]!=12 || (plansza[i+dx][j+dy] == PUSTE && dy ==0) || (plansza[i+dx][i+dy] != PUSTE && dy !=0))
+                            if(plansza[i][j]!=12 || (plansza[i+dx][j+dy] == PUSTE && dy ==0) || (plansza[i+dx][j+dy] != PUSTE && dy !=0))
                             {
-                                ruch_fig = plansza[i][j];
-                                bita_fig = plansza[i+dx][j+dy];
-                                plansza[i+dx][j+dy] = plansza[i][j];
-                                plansza[i][j]=PUSTE;
-                                if(plansza[i+dx][j+dy] == 12 && i+dx == 7)
-                                    plansza[i+dx][j+dy]=KROLOWA_K;
-                                wynik=komputer(plansza,'g',glebia -1);
-                                plansza[i+dx][j+dy]=bita_fig;
-                                plansza[i][j]=ruch_fig;
-                                if(wynik > wmax)
+                                if(plansza[i][j]==12 && i==1 && plansza[i+1][j]==PUSTE && dy==0)
                                 {
-                                    wmax=wynik;
-                                    if(glebia == 4)
+
+                                    for(int z=1;z<=2;z++)
                                     {
-                                    printf("%d",wmax);
-                                    nx = i;
-                                    ny = j;
-                                    nk = kierunek;
-                                    no = odleglosc;
+                                    ruch_fig = plansza[i][j];
+                                    bita_fig = plansza[i+z][j+dy];
+                                    plansza[i+z][j+dy] = plansza[i][j];
+                                    plansza[i][j]=PUSTE;
+                                    wynik=komputer(plansza,'g',glebia -1);
+                                    plansza[i+z][j+dy]=bita_fig;
+                                    plansza[i][j]=ruch_fig;
+                                    if(wynik > wmax)
+                                    {
+                                        wmax=wynik;
+                                        if(glebia == 4)
+                                        {
+                                        nx = i;
+                                        ny = j;
+                                        nk = kierunek;
+                                        no = odleglosc;
+                                        }
+
                                     }
 
+                                    }
+                                }else{
+                                 ruch_fig = plansza[i][j];
+                                    bita_fig = plansza[i+dx][j+dy];
+                                    plansza[i+dx][j+dy] = plansza[i][j];
+                                    plansza[i][j]=PUSTE;
+                                    if(plansza[i+dx][j+dy] == 12 && i+dx == 7)
+                                       plansza[i+dx][j+dy]=KROLOWA_K;
+                                    wynik=komputer(plansza,'g',glebia -1);
+                                    plansza[i+dx][j+dy]=bita_fig;
+                                    plansza[i][j]=ruch_fig;
+                                    if(wynik > wmax)
+                                    {
+                                        wmax=wynik;
+                                        if(glebia == 4)
+                                        {
+                                        nx = i;
+                                        ny = j;
+                                        nk = kierunek;
+                                        no = odleglosc;
+                                        }
+
+                                    }
+
+
                                 }
-                            }
+                          }
                     }
                     return wmax;
     }
@@ -309,8 +338,26 @@ int komputer(int plansza[size][size],char znak,int glebia)
                         dy=odleglosc*WY[plansza[i][j]][kierunek];
                         if(i+dx < 8 && i+dx >=0 && j+dy >=0 && j+dy < 8)
                             if(plansza[i+dx][j+dy]==0 || plansza[i+dx][j+dy] >=7)
-                            if(plansza[i][j]!=6 || (plansza[i+dx][j+dy] == PUSTE && dy ==0) || (plansza[i+dx][i+dy] != PUSTE && dy !=0))
+                            if(plansza[i][j]!=6 || (plansza[i+dx][j+dy] == PUSTE && dy ==0) || (plansza[i+dx][j+dy] != PUSTE && dy !=0))
                             {
+                                if(plansza[i][j]==6 && plansza[i-1][j]==PUSTE && dy==0 && i==6)
+                                {
+                                    for(int z=1;z<=2;z++)
+                                    {
+                                ruch_fig = plansza[i][j];
+                                bita_fig = plansza[i-z][j+dy];
+                                plansza[i-z][j+dy] = plansza[i][j];
+                                plansza[i][j]=PUSTE;
+                                wynik=komputer(plansza,'k',glebia -1);
+                                plansza[i-z][j+dy]=bita_fig;
+                                plansza[i][j]=ruch_fig;
+                                if(wynik < wmin)
+                                    wmin=wynik;
+
+                                    }
+                                }
+
+                            else{
                                 ruch_fig = plansza[i][j];
                                 bita_fig = plansza[i+dx][j+dy];
                                 plansza[i+dx][j+dy] = plansza[i][j];
@@ -322,12 +369,15 @@ int komputer(int plansza[size][size],char znak,int glebia)
                                 plansza[i][j]=ruch_fig;
                                 if(wynik < wmin)
                                     wmin=wynik;
-                            }
-                    }
-                    return wmin;
-    }
 
+                                }
+
+                             }
+                    }
+    return wmin;
+     }
 }
+
 int main()
 {
     int plansza[size][size]=
@@ -341,43 +391,76 @@ int main()
         {6,6,6,6,6,6,6,6},
         {4,5,3,1,2,3,5,4}
     };
-    printf("%d\n",ocena(plansza));
+     /*{
+        {0,0,0,0,7,0,0,0},
+        {0,0,0,0,6,0,0,0},
+        {0,0,0,0,0,0,0,0},
+        {0,0,0,0,1,0,0,0},
+        {0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0}
+    };*/
+
+    int stan=0,tx,ty,cy,dx,dy,zagrop=0,zagrok=0,P_pole,D_pole;
     wypisz(plansza);
-    int stan=0,tx,ty,dx,dy;
     while(1)
     {
         do
         {
         printf("podaj pozycje pionka ktorego chcesz przesunac\n");
-        scanf("%d %d",&tx,&ty);
-        }while(plansza[tx][ty]==0 || tx>=8 || tx<0 || ty>=8 || ty<0);
-
+        scanf("%d %c",&tx,&cy);
+        tx--;
+        ty=(int)cy-(int)'a';
+        }while(plansza[tx][ty]==0 || tx>=8 || tx<0 || ty>=8 || ty<0 || plansza[tx][ty]>=7);
+        P_pole=plansza[tx][ty];
         do
         {
         printf("podaj pozycje pionka na ktora chcesz przesunac\n");
-        scanf("%d %d",&dx,&dy);
+        scanf("%d %c",&dx,&cy);
+        dx--;
+        dy=(int)cy-(int)'a';
         }while((plansza[dx][dy]<7 && plansza[dx][dy] != 0) || dx>=8 || dx<0 || dy>=8 || dy<0);
+
         plansza[dx][dy]=plansza[tx][ty];
         plansza[tx][ty]=PUSTE;
         if(plansza[dx][dy]==6 && dx == 0)
         plansza[dx][dy]=KROLOWA;
-        stan=ocena(plansza);
-        if(stan>WYGRANA || stan < PRZEGRANA)
+        zagrop=komputer(plansza,'k',1);
+        if(zagrop > WYGRANA)
+        {
+            printf("JESTES TAM SZACHOWANY JESZCZE RAZ!\n");
+            plansza[tx][ty]=P_pole;
+            plansza[dx][dy]=D_pole;
+            continue;
+        }
+        zagrok=komputer(plansza,'g',1);
+        stan=komputer(plansza,'k',2);
+        if(stan>WYGRANA || stan<PRZEGRANA)
             break;
         komputer(plansza,'k',4);
         plansza[nx+no*WX[plansza[nx][ny]][nk]][ny+no*WY[plansza[nx][ny]][nk]]=plansza[nx][ny];
-        //printf("%d %d %d %d\n",nx,ny,nk,no);
         plansza[nx][ny]=PUSTE;
-        stan=ocena(plansza);
-        if(stan>WYGRANA || stan < PRZEGRANA)
-            break;
+        stan=komputer(plansza,'g',2);
+        zagrop=komputer(plansza,'k',1);
+        zagrok=komputer(plansza,'g',1);
+        system("cls");
         wypisz(plansza);
+        if(zagrop > WYGRANA)
+            printf("SZACH AI!!\n");
+        if(stan < PRZEGRANA || stan > WYGRANA)
+            break;
+
     }
+    system("cls");
     wypisz(plansza);
-    if(stan > WYGRANA)
-        printf("AI WON!!");
+    printf("%d",stan);
+    if((stan > WYGRANA || stan < PRZEGRANA) && zagrok > PRZEGRANA && zagrok < WYGRANA && zagrop > PRZEGRANA && zagrop < WYGRANA)
+    printf("PAT");
+    else if(stan > WYGRANA)
+    printf("AI WON!!");
     else if(stan < PRZEGRANA)
-        printf("YOU WON!!");
+    printf("YOU WON!!");
     else
     printf("nie dziala");
     return 0;
