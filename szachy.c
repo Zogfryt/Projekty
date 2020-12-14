@@ -16,8 +16,6 @@
 #define KON_K 11
 #define PION_K 12
 #define PAT 20000000
-#define nieskon 2147483647
-#define Mnieskon -2147483648
 
 int MAX_KIER[13]={0,8,8,4,4,8,3,8,8,4,4,8,3};
 int MAX_RANGE[13]={0,2,8,8,8,2,2,2,8,8,8,2,2};
@@ -243,6 +241,7 @@ int ocena(int plansza[size][size])
 }
 int komputer(int plansza[size][size],char znak,int glebia)
 {
+    wypisz(plansza);
     int dx,dy,kierunek,odleglosc;
     int wynik,wmax,wmin,ruch_fig,bita_fig;
 
@@ -393,7 +392,7 @@ int main()
         {6,6,6,6,6,6,6,6},
         {4,5,3,1,2,3,5,4}
     };
-    /* {
+     /*{
         {0,0,0,0,7,0,0,0},
         {0,0,0,0,6,0,0,0},
         {0,0,0,0,0,0,0,0},
