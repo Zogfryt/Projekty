@@ -241,7 +241,6 @@ int ocena(int plansza[size][size])
 }
 int komputer(int plansza[size][size],char znak,int glebia)
 {
-    wypisz(plansza);
     int dx,dy,kierunek,odleglosc;
     int wynik,wmax,wmin,ruch_fig,bita_fig;
 
