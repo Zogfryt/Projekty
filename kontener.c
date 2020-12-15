@@ -34,11 +34,7 @@ void wstaw(struct el_listy **pocz, double war)
     struct el_listy *nowy, *ww=*pocz;
     nowy=malloc(sizeof(struct el_listy));
     nowy->w=war;
-    if(ww==0)
-    {
-        nowy->nast = 0;
-        *pocz=nowy;
-    }else if(war < ww->w)
+    if(ww==0 || war < ww->w)
     {
         nowy->nast = ww;
         *pocz=nowy;
@@ -109,6 +105,13 @@ struct el_listy *kopiuj_liste(struct el_listy *pocz)
             pocz=pocz->nast;
         }
     }
+
+    struct el_listy *szukana(struct el_listy *pocz, double szukana)
+    {
+        while(pocz!=0 && szukana != pocz->w)
+            pocz=pocz->nast;
+        return pocz;
+    };
 int main()
 {
     double x,s=5;
@@ -118,8 +121,10 @@ int main()
     scanf("%lf",&x);
     wstaw(&ws,x);
     scanf("%lf",&x);
-    wstaw(&ws1,x);
-    suma=dodaj_listy(ws,ws1);
-    wypisz(suma);
+    wstaw(&ws,x);
+    scanf("%lf",&s);
+    wypisz(ws);
+    if(suma!=0)
+    printf("%lf",suma->w);
     return 0;
 }
