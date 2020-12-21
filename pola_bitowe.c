@@ -34,7 +34,7 @@ int main()
     data.rok=ptr->tm_year+1900;
     free(ptr);
     do{
-    printf("Podaj sume tego co ma byc wyswietlone (1-dzien,2-miesiac,4,rok)\n[np 5=1+4 wyswietli dzien i rok]\n");
+    printf("Podaj sume tego co ma byc wyswietlone (1-dzien,2-miesiac,4-rok)\n[np 5=1+4 wyswietli dzien i rok]\n");
     scanf("%d",x);
     }while(*x>7 || *x<0);
     przydziel(x);
