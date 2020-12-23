@@ -16,7 +16,7 @@ int main()
         printf("Failed");
         return 1;
     }
-    printf("dzia≥a\n");
+    printf("dzia≈Ça\n");
 
     if((s=socket(AF_INET,SOCK_STREAM,0))==INVALID_SOCKET)
         printf("nima socketa");
@@ -29,11 +29,12 @@ int main()
     if(connect(s, (struct sockaddr *)&server, sizeof(server))<0)
     {
         puts("connect error");
+        getch();
         return 1;
     }
 
     puts("Connected");
-    message = "dzia≥laj please";
+    message = "dzialaj please";
     if( send(s, message, strlen(message),0)<0)
     {
         puts("send Failed");
@@ -49,6 +50,7 @@ int main()
     puts("Reply received\n");
     odp[odp_size] = '\0';
     puts(odp);
+    getch();
     closesocket(s);
     WSACleanup();
     return 0;
