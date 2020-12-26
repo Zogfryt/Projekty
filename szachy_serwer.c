@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <winsock2.h>
 #define size 8
 #define WYGRANA 1800
 #define PRZEGRANA -1800
@@ -380,6 +382,62 @@ int komputer(int plansza[size][size],char znak,int glebia)
 
 int main()
 {
+    WSADATA wsa;
+    SOCKET s, new_socket;
+    struct sockaddr_in serwer,client;
+    int ruch[4],c,wys;
+    char *szach,*koniec,*neutral,*wszach,*awon,*won,*pat;
+    szach=":s";
+    koniec=":q";
+    wszach=":o";
+    pat=":p";
+    won=":w";
+    awon=":a";
+    neutral=":n";
+
+    if(WSAStartup(MAKEWORD(2,2),&wsa) != 0){
+        printf("Failed");
+        getch();
+        return 1;
+    }
+    printf("works\n");
+
+    if((s=socket(AF_INET,SOCK_STREAM,0)) == INVALID_SOCKET){
+        printf("Failed socket");
+        getch();
+        return 1;
+    }
+    printf("Socket created\n");
+
+    serwer.sin_family=AF_INET;
+    serwer.sin_addr.s_addr = inet_addr("127.0.0.1");
+    serwer.sin_port = htons(9000);
+
+        if( bind(s,(struct sockaddr *)&serwer,sizeof(serwer)) == SOCKET_ERROR)
+    {
+        printf("BIND FAILED");
+        return 1;
+    }
+    printf("Bind created\n");
+
+    if(!listen(s,30))
+    printf("listening...\n");
+    else{
+    printf("error with listening\n");
+    getch();
+    return 1;
+}
+
+    c = sizeof(struct sockaddr_in);
+    new_socket = accept(s, (struct sockaddr *)&client,&c);
+    if(new_socket == INVALID_SOCKET)
+    {
+       printf("accept failed");
+       getch();
+       return 1;
+    }
+    puts("connection accepted");
+
     int plansza[size][size]=
     {
         {10,11,9,7,8,9,11,10},
@@ -402,43 +460,44 @@ int main()
         {0,0,0,0,0,0,0,0}
     };*/
 
-    int stan=0,tx,ty,cy,dx,dy,zagrop=0,zagrok=0,P_pole,D_pole;
+    int stan=0,zagrop=0,zagrok=0,P_pole,D_pole;
     wypisz(plansza);
+    for(int i=0;i<8;i++)
+    send(new_socket,(char *)plansza[i],sizeof(int)*8,0);
     while(1)
     {
-        do
-        {
-        printf("podaj pozycje pionka ktorego chcesz przesunac\n");
-        scanf("%d %c",&tx,&cy);
-        tx--;
-        ty=(int)cy-(int)'a';
-        }while(plansza[tx][ty]==0 || tx>=8 || tx<0 || ty>=8 || ty<0 || plansza[tx][ty]>=7);
-        P_pole=plansza[tx][ty];
-        do
-        {
-        printf("podaj pozycje pionka na ktora chcesz przesunac\n");
-        scanf("%d %c",&dx,&cy);
-        dx--;
-        dy=(int)cy-(int)'a';
-        }while((plansza[dx][dy]<7 && plansza[dx][dy] != 0) || dx>=8 || dx<0 || dy>=8 || dy<0);
-        D_pole=plansza[dx][dy];
+        if(recv(new_socket,(char*)ruch,sizeof(int)*4,0) == SOCKET_ERROR){
+            printf("receive error");
+            getch();
+            return 1;
+        }
+        P_pole=plansza[ruch[0]][ruch[1]];
+        D_pole=plansza[ruch[2]][ruch[3]];
 
-        plansza[dx][dy]=plansza[tx][ty];
-        plansza[tx][ty]=PUSTE;
-        if(plansza[dx][dy]==6 && dx == 0)
-        plansza[dx][dy]=KROLOWA;
+
+        plansza[ruch[2]][ruch[3]]=plansza[ruch[0]][ruch[1]];
+        plansza[ruch[0]][ruch[1]]=PUSTE;
+        if(plansza[ruch[2]][ruch[3]]==6 && ruch[2] == 0)
+        plansza[ruch[2]][ruch[3]]=KROLOWA;
         zagrop=komputer(plansza,'k',1);
         if(zagrop > WYGRANA)
         {
-            printf("JESTES TAM SZACHOWANY JESZCZE RAZ!\n");
-            plansza[tx][ty]=P_pole;
-            plansza[dx][dy]=D_pole;
+            send(new_socket,wszach,3,0);
+            plansza[ruch[0]][ruch[1]]=P_pole;
+            plansza[ruch[2]][ruch[3]]=D_pole;
             continue;
         }
+        else
+        send(new_socket,neutral,3,0);
         zagrok=komputer(plansza,'g',1);
         stan=komputer(plansza,'k',2);
         if(stan>WYGRANA || stan<PRZEGRANA)
+        {
+            send(new_socket,koniec,3,0);
             break;
+        }
+        else
+        send(new_socket,neutral,3,0);
         komputer(plansza,'k',4);
         plansza[nx+no*WX[plansza[nx][ny]][nk]][ny+no*WY[plansza[nx][ny]][nk]]=plansza[nx][ny];
         plansza[nx][ny]=PUSTE;
@@ -447,22 +506,38 @@ int main()
         zagrok=komputer(plansza,'g',1);
         system("cls");
         wypisz(plansza);
-        if(zagrop > WYGRANA)
-            printf("SZACH AI!!\n");
+        for(int i=0;i<8;i++)
+        send(new_socket,(char *)plansza[i],sizeof(int)*8,0);
+        if(zagrop > WYGRANA){
+            send(new_socket,szach,3,0);
+        }
+        else
+        send(new_socket,neutral,3,0);
         if(stan < PRZEGRANA || stan > WYGRANA)
+        {
+            send(new_socket,koniec,3,0);
             break;
+        }
+        else
+        send(new_socket,neutral,3,0);
 
     }
     system("cls");
     wypisz(plansza);
-    printf("%d",stan);
+    for(int i=0;i<8;i++)
+    send(new_socket,(char *)plansza[i],sizeof(int)*8,0);
+    //printf("%d",stan);
     if((stan > WYGRANA || stan < PRZEGRANA) && zagrok > PRZEGRANA && zagrok < WYGRANA && zagrop > PRZEGRANA && zagrop < WYGRANA)
-    printf("PAT");
+    send(new_socket,pat,3,0);
     else if(stan > WYGRANA)
-    printf("AI WON!!");
+    send(new_socket,awon,3,0);
     else if(stan < PRZEGRANA)
-    printf("YOU WON!!");
+    send(new_socket,won,3,0);
     else
-    printf("nie dziala");
+    send(new_socket,neutral,3,0);
+    closesocket(s);
+    closesocket(new_socket);
+    WSACleanup();
+    getch();
     return 0;
 }
