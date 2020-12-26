@@ -90,18 +90,13 @@ int main()
     {
         do
         {
-        printf("podaj pozycje pionka ktorego chcesz przesunac\n");
-        scanf("%d%c",&tx,&ty);
+        printf("podaj pozycje pionka ktorego chcesz przesunac oraz pozycje na która chcesz pionek przesunac (np: 3a4b)\n");
+        scanf("%d%c%d%c",&tx,&ty,&dx,&dy);
         ruch[0]=tx-1;
         ruch[1]=(int)ty-(int)'a';
-        }while(plansza[ruch[0]][ruch[1]]==0 || ruch[0]>=8 || ruch[0]<0 || ruch[1]>=8 || ruch[1]<0 || plansza[ruch[0]][ruch[1]]>=7);
-        do
-        {
-        printf("podaj pozycje pionka na ktora chcesz przesunac\n");
-        scanf("%d%c",&dx,&dy);
         ruch[2]=dx-1;
         ruch[3]=(int)dy-(int)'a';
-        }while((plansza[ruch[2]][ruch[3]]<7 && plansza[ruch[2]][ruch[3]] != 0) || ruch[2]>=8 || ruch[2]<0 || ruch[3]>=8 || ruch[3]<0);
+        }while(plansza[ruch[0]][ruch[1]]==0 || ruch[0]>=8 || ruch[0]<0 || ruch[1]>=8 || ruch[1]<0 || plansza[ruch[0]][ruch[1]]>=7 || (plansza[ruch[2]][ruch[3]]<7 && plansza[ruch[2]][ruch[3]] != 0) || ruch[2]>=8 || ruch[2]<0 || ruch[3]>=8 || ruch[3]<0);
 
         send(s,(char*)ruch,sizeof(int)*4,0);
 
