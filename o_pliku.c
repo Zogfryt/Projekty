@@ -8,28 +8,92 @@ SOCKET s;
 
 FILE *fp;
 struct sockaddr_in serwer;
-char message[2000],odp[2000];
-int l=0,odp_dl;
+char message[2000],odp[2000],ndziala[8];
+int l=0,odp_dl,odp_dlr;
 
 
-WSAStartup(MAKEWORD(2,2),&wsa);
-s=socket(AF_INET,SOCK_STREAM,0);
+if(WSAStartup(MAKEWORD(2,2),&wsa) != 0)
+{
+    printf("failed");
+    getch();
+    return 1;
+}
+printf("Works\n");
+
+if((s=socket(AF_INET,SOCK_STREAM,0)) == INVALID_SOCKET){
+    printf("Socket doesn't work");
+    getch();
+    return 1;
+}
+printf("socket created\n");
 
 serwer.sin_addr.s_addr = inet_addr("127.0.0.1");
 serwer.sin_family = AF_INET;
 serwer.sin_port = htons(9000);
 
-connect(s,(struct sockaddr *)&serwer, sizeof(serwer));
+if(connect(s,(struct sockaddr *)&serwer, sizeof(serwer)) < 0){
+    printf("connection error");
+    getch();
+    return 1;
+}
+printf("connection has been established\n");
 
-odp_dl=recv(s,odp,2000,0);
+while(1){
+if((odp_dl=recv(s,odp,2000,0)) == SOCKET_ERROR){
+    printf("receive error");
+    getch();
+    return 1;
+}
 odp[odp_dl]='\0';
-puts(odp);
+printf("\n%s",odp);
 
 fgets(message,2000,stdin);
-send(s,message,2000,0);
+odp_dlr=strlen(message);
+send(s,(char *)&odp_dlr,sizeof(int),0);
+send(s,message,sizeof(char)*odp_dlr+1,0);
 
-recv(s,(char *)&l,sizeof(int),0);
-printf("%d",l);
+if(strcmp(message,":q\n")==0)
+break;
+
+if(recv(s,ndziala,8,0) == SOCKET_ERROR)
+{
+    printf("receive error");
+    getch();
+    return 1;
+}
+
+if(strcmp(ndziala,"ndziala")==0)
+{
+    puts("can't open, try again");
+    continue;
+}
+
+
+if(recv(s,(char *)&l,sizeof(int),0) == SOCKET_ERROR){
+    printf("receive error");
+    getch();
+    return 1;
+}
+
+printf("\n----------------------------------------------------------\n");
+for(int i=0;i<l;i++)
+{
+    if(recv(s,(char *)&odp_dlr,sizeof(int),0) == SOCKET_ERROR){
+        printf("receive error");
+        getch();
+        return 1;
+    }
+    if(recv(s,odp,sizeof(char)*odp_dlr+1,0) == SOCKET_ERROR){
+        printf("receive error");
+        getch();
+        return 1;
+    }
+    printf("%s",odp);
+}
+}
+printf("end of transmission");
+closesocket(s);
+WSACleanup();
 getch();
 return 0;
 }

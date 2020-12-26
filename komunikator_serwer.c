@@ -64,6 +64,7 @@ int main()
     printf("end of transmission");
     getch();
     closesocket(s);
+    closesocket(new_socket);
     WSACleanup();
     return 0;
 }
