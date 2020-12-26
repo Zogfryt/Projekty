@@ -52,7 +52,7 @@ int main()
     puts(odp);
     while(1)
     {
-    printf("write a reply: ");
+    printf("write a reply (:q ends conversation: ");
     fgets(message2,2000,stdin);
     send(s, message2, strlen(message2),0);
     if((odp_size=recv(s, odp, 2000, 0)) == SOCKET_ERROR)
@@ -60,9 +60,14 @@ int main()
     puts("Reply received\n");
     odp[odp_size]='\0';
     if(strcmp(odp,":q\n")==0)
-    break;
+    {
+     send(s,odp,2000,0);
+     break;
+    }
     puts(odp);
     }
+    printf("End of transmission");
+    getch();
     closesocket(s);
     WSACleanup();
     return 0;
