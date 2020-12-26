@@ -266,7 +266,7 @@ int komputer(int plansza[size][size],char znak,int glebia)
                             if(plansza[i+dx][j+dy] <= 6)
                             if(plansza[i][j]!=12 || (plansza[i+dx][j+dy] == PUSTE && dy ==0) || (plansza[i+dx][j+dy] != PUSTE && dy !=0))
                             {
-                                if(plansza[i][j]==12 && i==1 && plansza[i+1][j]==PUSTE && dy==0)
+                                if(plansza[i][j]==12 && i==1 && plansza[i+1][j]==PUSTE  && plansza[i+2][j]==PUSTE && dy==0)
                                 {
 
                                     for(int z=1;z<=2;z++)
@@ -340,7 +340,7 @@ int komputer(int plansza[size][size],char znak,int glebia)
                             if(plansza[i+dx][j+dy]==0 || plansza[i+dx][j+dy] >=7)
                             if(plansza[i][j]!=6 || (plansza[i+dx][j+dy] == PUSTE && dy ==0) || (plansza[i+dx][j+dy] != PUSTE && dy !=0))
                             {
-                                if(plansza[i][j]==6 && plansza[i-1][j]==PUSTE && dy==0 && i==6)
+                                if(plansza[i][j]==6 && plansza[i-1][j]==PUSTE && plansza[i-2][j]==PUSTE && dy==0 && i==6)
                                 {
                                     for(int z=1;z<=2;z++)
                                     {
