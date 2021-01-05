@@ -50,9 +50,10 @@ int main()
     puts("Reply received\n");
     odp[odp_size] = '\0';
     puts(odp);
+    printf("\n%d",odp_size);
     while(1)
     {
-    printf("write a reply (:q ends conversation: ");
+    printf("write a reply (:q ends conversation): ");
     fgets(message2,2000,stdin);
     send(s, message2, strlen(message2),0);
     if((odp_size=recv(s, odp, 2000, 0)) == SOCKET_ERROR)

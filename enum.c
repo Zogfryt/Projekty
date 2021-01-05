@@ -6,36 +6,38 @@ enum kolor {zielony,czerwony,niebieski,fioletowy,czarny,bialy,ekri,lososiowy};
 
 int main()
 {
-    setlocale(LC_ALL,"");
+    system("chcp 65001");
+    system("cls");
     enum kolor koszulka,buty,skarpetki,spodnie;
+    srand(time(NULL));
     koszulka=rand()%8;
 
 
     switch (koszulka)
     {
     case zielony:
-        printf("Ubierz zielona koszulkê");
+        printf("Ubierz zielonÄ… koszulke");
         break;
     case czerwony:
-        printf("Ubierz czerwon¹ koszulkê");
+        printf("Ubierz czerwonÄ… koszulke");
         break;
     case niebieski:
-        printf("Ubierz niebiesk¹ koszulkê");
+        printf("Ubierz niebieskÄ… koszulke");
         break;
     case fioletowy:
-        printf("Ubierz fioletow¹ koszulkê");
+        printf("Ubierz fioletowÄ… koszulke");
         break;
     case czarny:
-        printf("ubierz czarn¹ koszulkê");
+        printf("ubierz czarnÄ… koszulke");
         break;
     case bialy:
-        printf("Ubierz bia³¹ koszulke");
+        printf("Ubierz biaÅ‚Ä… koszulke");
         break;
     case ekri:
-        printf("Ubierz koszulkê koloru ekri");
+        printf("Ubierz koszulke koloru ekri");
         break;
     case lososiowy:
-        printf("Ubierz lososiow¹ koszulkê");
+        printf("Ubierz lososiowÄ… koszulke");
         break;
     }
 
@@ -58,13 +60,13 @@ int main()
         printf(", czarne buty");
         break;
     case bialy:
-        printf(", bia³e buty");
+        printf(", biaÅ‚e buty");
         break;
     case ekri:
         printf(", buty koloru ekri");;
         break;
     case lososiowy:
-        printf(", ³ososiowe buty");
+        printf(", Å‚ososiowe buty");
         break;
     }
 
@@ -87,13 +89,13 @@ int main()
         printf(", czarne spodnie");
         break;
     case bialy:
-        printf(", bia³e spodnie");
+        printf(", biaÅ‚e spodnie");
         break;
     case ekri:
          printf(", spodnie koloru ekri");
         break;
     case lososiowy:
-         printf(", ³ososiowe spodnie");
+         printf(", Å‚ososiowe spodnie");
         break;
     }
 
@@ -116,13 +118,13 @@ int main()
         printf(", czarne skarpetki");
         break;
     case bialy:
-        printf(", bia³e skarpetki");
+        printf(", biaÅ‚e skarpetki");
         break;
     case ekri:
          printf(", skarpetki koloru ekri");
         break;
     case lososiowy:
-         printf(", ³ososiowe skarpetki");
+         printf(", Å‚ososiowe skarpetki");
         break;
     }
 

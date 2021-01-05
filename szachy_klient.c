@@ -116,6 +116,9 @@ int main()
             return 1;
         }
 
+        if(strcmp(wiad,":q")==0)
+        break;
+
         system("cls");
         for(int i=0;i<8;i++)
         if(recv(s,(char*)plansza[i],sizeof(int)*8,0) == SOCKET_ERROR){
@@ -125,8 +128,6 @@ int main()
         }
         wypisz(plansza);
 
-        if(strcmp(wiad,":q")==0)
-        break;
         if(recv(s,wiad,3,0)==SOCKET_ERROR){
             puts("receive error");
             getch();

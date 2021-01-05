@@ -32,7 +32,6 @@ int main()
     data.Dzien=ptr->tm_mday;
     data.Miesiac=ptr->tm_mon+1;
     data.rok=ptr->tm_year+1900;
-    free(ptr);
     do{
     printf("Podaj sume tego co ma byc wyswietlone (1-dzien,2-miesiac,4-rok)\n[np 5=1+4 wyswietli dzien i rok]\n");
     scanf("%d",x);
