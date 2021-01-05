@@ -8,7 +8,7 @@ SOCKET s;
 
 FILE *fp;
 struct sockaddr_in serwer;
-char message[2000],odp[2000],ndziala[8];
+char message[8000],odp[8000],ndziala[8];
 int l=0,odp_dl,odp_dlr;
 
 
@@ -39,7 +39,7 @@ if(connect(s,(struct sockaddr *)&serwer, sizeof(serwer)) < 0){
 printf("connection has been established\n");
 
 while(1){
-if((odp_dl=recv(s,odp,2000,0)) == SOCKET_ERROR){
+if((odp_dl=recv(s,odp,8000,0)) == SOCKET_ERROR){
     printf("receive error");
     getch();
     return 1;
@@ -47,7 +47,7 @@ if((odp_dl=recv(s,odp,2000,0)) == SOCKET_ERROR){
 odp[odp_dl]='\0';
 printf("\n%s",odp);
 
-fgets(message,2000,stdin);
+fgets(message,8000,stdin);
 odp_dlr=strlen(message);
 send(s,(char *)&odp_dlr,sizeof(int),0);
 send(s,message,sizeof(char)*odp_dlr+1,0);
@@ -88,6 +88,7 @@ for(int i=0;i<l;i++)
         getch();
         return 1;
     }
+    if(strcmp(odp,":w")!=0)
     printf("%s",odp);
 }
 }

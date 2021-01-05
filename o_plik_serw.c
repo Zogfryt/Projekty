@@ -8,8 +8,8 @@ SOCKET s,new_socket;
 
 FILE *fp;
 struct sockaddr_in serwer,client;
-char *message,odp[2000],ndziala[]="ndziala",dziala[]="aaaaaaa";
-int odp_dl,l=0;
+char *message,odp[8000],ndziala[]="ndziala",dziala[]="aaaaaaa",wymus[]=":w";
+int odp_dl,l=0,n,k=3;
 
 
 if(WSAStartup(MAKEWORD(2,2),&wsa) != 0)
@@ -53,7 +53,7 @@ if((new_socket = accept(s,(struct sockaddr *)&client,&c)) == INVALID_SOCKET){
     return 1;
 }
 while(1){
-l=0;
+l=1;
 message="insert the name of the file (write :q to end): ";
 send(new_socket,message,strlen(message),0);
 
@@ -101,10 +101,17 @@ send(new_socket,(char*)&l,sizeof(int),0);
 rewind(fp);
 for(int i=0;i<l;i++)
 {
-    fgets(odp,2000,fp);
+    n=fgets(odp,8000,fp);
     odp_dlr=strlen(odp);
+    if(n!=0)
+    {
     send(new_socket,(char *)&odp_dlr,sizeof(int),0);
     send(new_socket,odp,sizeof(char)*odp_dlr+1,0);
+    }else{
+    send(new_socket,(char *)&k,sizeof(int),0);
+    send(new_socket,wymus,sizeof(char)*3,0);
+    }
+
 }
 fclose(fp);
 }
