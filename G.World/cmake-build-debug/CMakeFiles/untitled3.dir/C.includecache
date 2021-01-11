@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/bataw/CLionProjects/untitled3/main.c
+GL/gl.h
+-
+GL/glut.h
+-
+math.h
+-
+stdio.h
+-
+
