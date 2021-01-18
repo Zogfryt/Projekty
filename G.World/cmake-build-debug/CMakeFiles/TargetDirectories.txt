@@ -1,3 +1,3 @@
-C:/Users/bataw/CLionProjects/untitled3/cmake-build-debug/CMakeFiles/untitled3.dir
-C:/Users/bataw/CLionProjects/untitled3/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/bataw/CLionProjects/untitled3/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/bartw/Projekty/G.World/cmake-build-debug/CMakeFiles/untitled3.dir
+C:/Users/bartw/Projekty/G.World/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/bartw/Projekty/G.World/cmake-build-debug/CMakeFiles/rebuild_cache.dir

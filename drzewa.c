@@ -71,14 +71,22 @@ int main()
 {
     struct el_drzewa *ws=0,*szuk=0;
     double x,s;
-    scanf("%lf",&x);
-    wstaw(&ws,x);
-    scanf("%lf",&x);
-    wstaw(&ws,x);
-    scanf("%lf",&x);
-    wstaw(&ws,x);
-    //wypisz(ws);
-    scanf("%lf",&s);
+   // scanf("%lf",&x);
+    wstaw(&ws,8);
+   // scanf("%lf",&x);
+    wstaw(&ws,2);
+   // scanf("%lf",&x);
+    wstaw(&ws,10);
+    wstaw(&ws,34);
+   // scanf("%lf",&x);
+    wstaw(&ws,5);
+   // scanf("%lf",&x);
+    wstaw(&ws,22);
+        wstaw(&ws,9);
+   // scanf("%lf",&x);
+    wstaw(&ws,12);
+    wypisz(ws);
+   // scanf("%lf",&s);
     szuk=szukana(ws,s);
     if(szuk!=0)
     printf("\n%lf\n",szuk->w);

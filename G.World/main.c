@@ -2,19 +2,21 @@
 #include <GL/glut.h>
 #include <math.h>
 #include <stdio.h>
+#include <time.h>
 #define ROZ_X 1000
 #define ROZ_Y 1000
 static double powierz[ROZ_X][ROZ_Y] = {0};
-static double czworo[ROZ_X][ROZ_Y] = {0};
-static double cube[ROZ_X][ROZ_Y] = {0};
-static double pira[ROZ_X][ROZ_Y] = {0};
-GLfloat KAT=0, PI=3.14, PX=-ROZ_X/2,PY=-5,PZ=-ROZ_Y/2;
+static int czworo[ROZ_X][ROZ_Y] = {0};
+static int cube[ROZ_X][ROZ_Y] = {0};
+static int pira[ROZ_X][ROZ_Y] = {0};
+GLfloat KAT=0, PI=3.14, PX=-ROZ_X/2,PY=-5,PZ=-ROZ_Y/2,KAT2=0;
+int window_height = 1080,window_width = 1920;
 
 void init(void)
 {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glFrustum(-5,5,-5,5,3,150);
+    glFrustum(-3,3,-3,3,2,150);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glEnable(GL_DEPTH_TEST);
@@ -31,6 +33,7 @@ void mount(int px, int py, int r1, int r2, int wys)
 }
 void init_board(int C_mount, int M_rad, int M_Height)
 {
+    srand(time(NULL)+4);
     int r1,r2,px,py,wys;
     for(int a=0; a<C_mount;a++)
     {
@@ -45,6 +48,7 @@ void init_board(int C_mount, int M_rad, int M_Height)
 
 void init_czworoboki(int C_czworo)
 {
+    srand(time(NULL)+3);
     int px,py;
     for(int a=0; a<C_czworo; a++) {
         px = rand() * ROZ_X / RAND_MAX;
@@ -55,6 +59,7 @@ void init_czworoboki(int C_czworo)
 
 void init_cubes(int C_czworo)
 {
+    srand(time(NULL)+2);
     int px,py;
     for(int a=0; a<C_czworo; a++) {
         px = rand() * ROZ_X / RAND_MAX;
@@ -65,6 +70,7 @@ void init_cubes(int C_czworo)
 
 void init_pira(int C_czworo)
 {
+    srand(time(NULL));
     int px,py;
     for(int a=0; a<C_czworo; a++) {
         px = rand() * ROZ_X / RAND_MAX;
@@ -97,7 +103,7 @@ void display(void)
 {
     glLoadIdentity();
     glRotatef(-KAT,0,1,0);
-    PY=-powierz[(int)(-PX)][(int)(-PZ)]-5;
+    PY=-powierz[(int)(-PX)][(int)(-PZ)]-6;
     glTranslatef(PX,PY,PZ);
     glClearColor(0.2,0.2,1.0,1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -108,10 +114,10 @@ void display(void)
     for(int x=0;x<ROZ_X-1;x++)
         for(int y=0;y<ROZ_Y-1;y++)
         {
-            glTexCoord2f(x,powierz[x][y]);  glVertex3f(x, powierz[x][y],y);
-            glTexCoord2f(x,powierz[x][y+1]);  glVertex3f(x, powierz[x][y+1],y+1);
-            glTexCoord2f(x+1,powierz[x+1][y+1]);  glVertex3f(x+1, powierz[x+1][y+1],y+1);
-            glTexCoord2f(x+1,powierz[x+1][y]);  glVertex3f(x+1,powierz[x+1][y],y);
+            glTexCoord2f(0,0);  glVertex3f(x, powierz[x][y],y);
+            glTexCoord2f(0,1);  glVertex3f(x, powierz[x][y+1],y+1);
+            glTexCoord2f(1,1);  glVertex3f(x+1, powierz[x+1][y+1],y+1);
+            glTexCoord2f(1,0);  glVertex3f(x+1,powierz[x+1][y],y);
         }
     glEnd();
     glDisable(GL_TEXTURE_2D);
@@ -228,23 +234,23 @@ void display(void)
     glColor3f(0.25f,0.075f,0.038f);
     glBegin(GL_QUADS);
 
-    glVertex3d(600,powierz[600][600],600);
-    glVertex3d(615,powierz[600][600],600);
+    glVertex3d(600,powierz[600][600]-10,600);
+    glVertex3d(615,powierz[600][600]-10,600);
     glVertex3d(615,powierz[600][600]+10,600);
     glVertex3d(600,powierz[600][600]+10,600);
 
-    glVertex3d(615,powierz[600][600],600);
-    glVertex3d(615,powierz[600][600],615);
+    glVertex3d(615,powierz[600][600]-10,600);
+    glVertex3d(615,powierz[600][600]-10,615);
     glVertex3d(615,powierz[600][600]+10,615);
     glVertex3d(615,powierz[600][600]+10,600);
 
-    glVertex3d(600,powierz[600][600],615);
-    glVertex3d(615,powierz[600][600],615);
+    glVertex3d(600,powierz[600][600]-10,615);
+    glVertex3d(615,powierz[600][600]-10,615);
     glVertex3d(615,powierz[600][600]+10,615);
     glVertex3d(600,powierz[600][600]+10,615);
 
-    glVertex3d(600,powierz[600][600],615);
-    glVertex3d(600,powierz[600][600],610);
+    glVertex3d(600,powierz[600][600]-10,615);
+    glVertex3d(600,powierz[600][600]-10,610);
     glVertex3d(600,powierz[600][600]+10,610);
     glVertex3d(600,powierz[600][600]+10,615);
 
@@ -253,8 +259,8 @@ void display(void)
     glVertex3d(600,powierz[600][600]+10,605);
     glVertex3d(600,powierz[600][600]+10,610);
 
-    glVertex3d(600,powierz[600][600],605);
-    glVertex3d(600,powierz[600][600],600);
+    glVertex3d(600,powierz[600][600]-10,605);
+    glVertex3d(600,powierz[600][600]-10,600);
     glVertex3d(600,powierz[600][600]+10,600);
     glVertex3d(600,powierz[600][600]+10,605);
 
@@ -340,25 +346,25 @@ void keyboard (unsigned char key, int x, int y)
             PZ-=cos(PI*KAT/180);
             glutPostRedisplay();
             break;
-        case 32:
-            PY -=  1;
-            glutPostRedisplay();
-            break;
-        case 'r':
-            PY += 1;
-            glutPostRedisplay();
-            break;
         default:
             glutPostRedisplay();
             break;
     }
 }
+
+void reshape (int w, int h) {
+    window_width = w;
+    window_height = h;
+
+    glViewport(0, 0, window_width, window_height);
+}
+
 int main(int argc, char** argv)
 {
     glutInit(&argc, argv);
     glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGBA);
-    glutInitWindowSize (400, 150);
-    glutInitWindowPosition (100, 100);
+    glutInitWindowSize (window_width, window_height);
+    glutInitWindowPosition (0, 0);
     glutCreateWindow ("asdf world");
     init ();
     init_img();
@@ -367,6 +373,7 @@ int main(int argc, char** argv)
     init_cubes(100);
     init_pira(50);
     glutDisplayFunc(display);
+    glutReshapeFunc(reshape);
     glutKeyboardFunc(keyboard);
     glutMainLoop();
     return 0;
